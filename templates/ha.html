@@ -1,0 +1,157 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pneumonia Detection</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Macondo" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js">
+    </script>
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+      
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{{ url_for('about') }}">SAIP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('index') }}">Course Project <span class="sr-only">(current)</span></a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home') }}">Home Assignment</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('about') }}">About Student</a>
+              </li>
+           
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+      <div class="con" style="margin-left: 450px;">
+      <div id="my_pdf_viewer">
+        <div id="canvas_container">
+            <canvas id="pdf_renderer" width="650px" height="750 px"></canvas>
+        </div>
+ 
+        <div id="navigation_controls">
+            <button id="go_previous">Previous</button>
+            <input id="current_page" value="1" type="number"/>
+            <button id="go_next">Next</button>
+        </div>
+ 
+        <div id="zoom_controls">  
+            <button id="zoom_in">+</button>
+            <button id="zoom_out">-</button>
+        </div>
+    </div></div>
+ 
+    <script>
+        var myState = {
+            pdf: null,
+            currentPage: 1,
+            zoom: 1
+        }
+      
+        pdfjsLib.getDocument('static/HA/HA_CASE_STUDY_SY-IC_A_Batch_3_ROLL_NO_73.pdf').then((pdf) => {
+      
+            myState.pdf = pdf;
+            render();
+ 
+        });
+ 
+        function render() {
+            myState.pdf.getPage(myState.currentPage).then((page) => {
+          
+                var canvas = document.getElementById("pdf_renderer");
+                var ctx = canvas.getContext('2d');
+      
+                var viewport = page.getViewport(myState.zoom);
+ 
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+          
+                page.render({
+                    canvasContext: ctx,
+                    viewport: viewport
+                });
+            });
+        }
+        document.getElementById('go_previous')
+    .addEventListener('click', (e) => {
+    if(myState.pdf == null|| myState.currentPage == 1) 
+    return;
+        
+    myState.currentPage -= 1;
+    document.getElementById("current_page").value = myState.currentPage;
+    render();
+});
+document.getElementById('go_next')
+    .addEventListener('click', (e) => {
+    if(myState.pdf == null || myState.currentPage > myState.pdf._pdfInfo.numPages) 
+    return;
+          
+    myState.currentPage += 1;
+    document.getElementById("current_page").value = myState.currentPage;
+    render();
+});
+document.getElementById('current_page')
+    .addEventListener('keypress', (e) => {
+    if(myState.pdf == null) return;
+  
+    // Get key code
+    var code = (e.keyCode ? e.keyCode : e.which);
+  
+    // If key code matches that of the Enter key
+    if(code == 13) {
+        var desiredPage = document.getElementById('current_page').valueAsNumber;
+                          
+        if(desiredPage >= 1 && desiredPage <= myState.pdf._pdfInfo.numPages) {
+            myState.currentPage = desiredPage;
+            document.getElementById("current_page").value = desiredPage;
+            render();
+        }
+    }
+});
+document.getElementById('zoom_in')
+    .addEventListener('click', (e) => {
+    if(myState.pdf == null) return;
+    myState.zoom += 0.5;
+ 
+    render();
+});
+document.getElementById('zoom_out')
+    .addEventListener('click', (e) => {
+    if(myState.pdf == null) return;
+    myState.zoom -= 0.5;
+     
+    render();
+});
+    </script>
+      
+</body>
+
+   
+  
+      
+        
+
+</html>

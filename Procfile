@@ -1,0 +1,1 @@
+web: pneumonia detection app app:app
