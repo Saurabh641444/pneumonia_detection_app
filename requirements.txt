@@ -15,10 +15,8 @@ cloudpickle @ file:///tmp/build/80754af9/cloudpickle_1598884132938/work
 colorama @ file:///tmp/build/80754af9/colorama_1607707115595/work
 coverage @ file:///C:/ci/coverage_1614615074147/work
 cryptography @ file:///C:/ci/cryptography_1616769344312/work
-cycler==0.10.0
-Cython @ file:///C:/ci/cython_1614014958194/work
-decorator==4.4.2
-Flask==1.1.2
+
+
 gast @ file:///tmp/build/80754af9/gast_1597433534803/work
 gevent==21.1.2
 gevent-ws==2.1.0

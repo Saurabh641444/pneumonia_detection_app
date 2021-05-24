@@ -21,7 +21,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 # Model saved with Keras model.save()
-MODEL_PATH = 'models/trained_model.h5'
+MODEL_PATH = 'models/trained_model2.h5'
 
 #Load your trained model
 model = load_model(MODEL_PATH)
@@ -31,14 +31,18 @@ print('Model loaded. Start serving...')
 
 
 def model_predict(img_path, model):
-    img = image.load_img(img_path, target_size=(64, 64)) #target_size must agree with what the trained model expects!!
+    img = image.load_img(img_path, target_size=(150, 150)) #target_size must agree with what the trained model expects!!
 
     # Preprocessing the image
     img = image.img_to_array(img)
-    img = np.expand_dims(img, axis=0)
-
-   
-    preds = model.predict(img)
+    
+    print(img.shape)
+    img=img.reshape(-1,150,150,1)
+    #img = np.expand_dims(img, axis=0)
+    #preds = (model.predict(img) > 0.5).astype("int32")
+    preds = model.predict_classes(img)
+    preds = preds.reshape(1,-1)[0][0]
+    print(preds)
     return preds
 
 
@@ -88,5 +92,5 @@ def upload():
 
     #this section is used by gunicorn to serve the app on Heroku
 if __name__ == '__main__':
-        app.run()
+        app.run(debug=True)
     
