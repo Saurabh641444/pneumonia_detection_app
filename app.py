@@ -65,11 +65,11 @@ def about():
 
     return render_template('about.html', title=title)
 
-@ app.route('/home')
-def home():
-    title = 'Home Assignment'
+# @ app.route('/home')
+# def home():
+#     title = 'Home Assignment'
 
-    return render_template('ha.html', title=title)
+#     return render_template('ha.html', title=title)
 
 
 @app.route('/predict', methods=['GET', 'POST'])
