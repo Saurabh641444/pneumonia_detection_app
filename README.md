@@ -40,9 +40,13 @@ For training the model I have used the simple Convolutional Neural Network Algor
 <br/>
 confusion matrix
 <img src="static/images/pneumonia2.png" alt=""/>
+<br/>
+
 ### 7. Accuracy - The accuracy of CNN model is 92.6%
 ### 8. Prediction
 <img src="static/images/pneumonia3.png" alt=""/>
+<br/>
+
 ### 9. Create website
 ### 10. Upload the files on github
 ### 11. Connect github to Heroku
